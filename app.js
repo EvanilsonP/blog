@@ -1,7 +1,10 @@
 const express = require('express');
+const { infoMiddleware } = require('./middleware/infoMdlw');
 const app = express();
 
 app.set('view engine', 'ejs');
+
+app.use(infoMiddleware);
 
 app.get('/', (req, res) => {
     const blogs = [
