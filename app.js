@@ -9,16 +9,20 @@ app.use(infoMiddleware);
 app.use(express.static('public'));
 db.database();
 
-
 app.get('/', (req, res) => {
-    const blogs = [
-        { title: 'Mario', snippet: 'A good day', body: 'lopse' },
-        { title: 'Mario', snippet: 'A good day', body: 'lopse' },
-        { title: 'Mario', snippet: 'A good day', body: 'lopse' },
-    ]
-    res.render('index', { title: 'Home', blogs: blogs});
+    res.redirect('/blogs');
 });
 
+app.get('/blogs', (req, res) => {
+    Blog.find().sort({ createdAt: -1 })
+    .then(result=> {
+        res.render('index', { blogs: result, title: 'All blogs'} );
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+  });
+  
 app.get('/about', (req, res) => {
     res.render('about', { title: 'About'});
 });
