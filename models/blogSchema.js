@@ -10,7 +10,7 @@ const blogSchema = new Schema({
         type: String,
         required: true
     },
-    boddy: {
+    body: {
         type: String,
         required: true
     }
