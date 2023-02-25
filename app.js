@@ -3,8 +3,8 @@ const { infoMiddleware } = require('./middleware/infoMdlw');
 const app = express();
 
 app.set('view engine', 'ejs');
-
 app.use(infoMiddleware);
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     const blogs = [
