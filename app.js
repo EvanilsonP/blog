@@ -1,6 +1,7 @@
 const express = require('express');
 const { infoMiddleware } = require('./middleware/infoMdlw');
 const db = require('./database/db');
+const Blog = require('./models/blogSchema');
 const app = express();
 
 app.set('view engine', 'ejs');
