@@ -7,6 +7,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(infoMiddleware);
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 db.database();
 
 app.get('/', (req, res) => {
@@ -29,6 +30,14 @@ app.get('/about', (req, res) => {
 
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: 'Create'});
+});
+
+app.post('/blogs', (req, res) => {
+    const blog = new Blog(req.body);
+    blog.save()
+
+    .then((result) => { res.redirect('/blogs') })
+    .catch((err) => console.log(err));
 });
 
 app.use((req, res) => {
