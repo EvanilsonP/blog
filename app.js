@@ -1,61 +1,26 @@
 const express = require('express');
-const { infoMiddleware } = require('./middleware/infoMdlw');
-const db = require('./database/db');
-const Blog = require('./models/blogSchema');
 const app = express();
+const blogRoutes = require('./routes/blogRoutes');
+const db = require('./database/db');
+const { infoMiddleware } = require('./middleware/infoMdlw');
 
 app.set('view engine', 'ejs');
-app.use(infoMiddleware);
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(infoMiddleware);
+app.use('/blogs', blogRoutes);
 db.database();
 
 app.get('/', (req, res) => {
-    res.redirect('/blogs');
+  res.redirect('/blogs');
 });
 
-app.get('/blogs', (req, res) => {
-    Blog.find().sort({ createdAt: -1 })
-    .then(result=> {
-        res.render('index', { blogs: result, title: 'All blogs'} );
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-  });
-  
 app.get('/about', (req, res) => {
-    res.render('about', { title: 'About'});
-});
-
-app.get('/blogs/create', (req, res) => {
-    res.render('create', { title: 'Create'});
-});
-
-app.post('/blogs', (req, res) => {
-    const blog = new Blog(req.body);
-    blog.save()
-
-    .then((result) => { res.redirect('/blogs') })
-    .catch((err) => console.log(err));
-});
-
-app.get('/blogs/:id', (req, res) => {
-    Blog.findById(req.params.id)
-
-    .then((result) => { res.render('details', { blog: result, title: 'Blog details'}) })
-    .catch((err) => console.log(err));
-})
-
-app.delete('/blogs/:id', (req, res) => {
-    Blog.findByIdAndDelete(req.params.id)
-
-    .then(result => { res.json({ redirect: '/blogs' })})
-    .catch((err) => console.log(err));
+  res.render('about', { title: 'About' });
 });
 
 app.use((req, res) => {
-    res.status(404).render('404', { title: '404'})
+  res.status(404).render('404', { title: '404' });
 });
 
 app.listen(3000, () => console.log('Running on port 3000.'));
