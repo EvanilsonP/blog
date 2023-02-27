@@ -40,6 +40,14 @@ app.post('/blogs', (req, res) => {
     .catch((err) => console.log(err));
 });
 
+app.get('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    Blog.findById(id)
+
+    .then((result) => { res.render('details', { blog: result, title: 'Blog details'}) })
+    .catch((err) => console.log(err));
+})
+
 app.use((req, res) => {
     res.status(404).render('404', { title: '404'})
 });
