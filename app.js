@@ -41,12 +41,18 @@ app.post('/blogs', (req, res) => {
 });
 
 app.get('/blogs/:id', (req, res) => {
-    const id = req.params.id;
-    Blog.findById(id)
+    Blog.findById(req.params.id)
 
     .then((result) => { res.render('details', { blog: result, title: 'Blog details'}) })
     .catch((err) => console.log(err));
 })
+
+app.delete('/blogs/:id', (req, res) => {
+    Blog.findByIdAndDelete(req.params.id)
+
+    .then(result => { res.json({ redirect: '/blogs' })})
+    .catch((err) => console.log(err));
+});
 
 app.use((req, res) => {
     res.status(404).render('404', { title: '404'})
